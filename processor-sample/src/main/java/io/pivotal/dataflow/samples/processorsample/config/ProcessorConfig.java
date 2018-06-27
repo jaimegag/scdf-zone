@@ -1,4 +1,4 @@
-package io.pivotal.dataflow.samples.config;
+package io.pivotal.dataflow.samples.processorsample.config;
 
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;

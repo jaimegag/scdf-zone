@@ -1,4 +1,4 @@
-package io.pivotal.dataflow.samples;
+package io.pivotal.dataflow.samples.processorsample;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
