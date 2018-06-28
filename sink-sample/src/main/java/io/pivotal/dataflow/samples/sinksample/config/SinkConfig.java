@@ -21,7 +21,7 @@ public class SinkConfig {
     public void httpSink(@Payload Map<String, String> payload) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         HttpEntity<Map<String, String>> httpEntity = new HttpEntity<Map<String, String>>(payload);
-        String response = restTemplate.postForObject("http://fake.domain.com/species", httpEntity, String.class);
+        String response = restTemplate.postForObject("https://species-app.apps.pcfgcp.jagapps.co/species", httpEntity, String.class);
         System.out.println("Response [" + response + "]");
     }
 }

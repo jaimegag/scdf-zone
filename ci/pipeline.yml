@@ -1,0 +1,79 @@
+---
+
+resources:
+
+- name: scdf-zone
+  type: git
+  source:
+    uri: https://github.com/jaimegag/scdf-zone.git
+    branch: master
+    ignore_paths:
+    - ci/docker-image/*
+
+- name: s3-repo
+  type: s3
+  source:
+    bucket: jaimegag-releases
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+
+# Groups
+groups:
+- name: processor
+  jobs:
+  - build-processor
+  - register-processor
+  - update-processor
+
+jobs:
+
+- name: build-processor
+  serial: true
+  public: true
+  plan:
+  - get: scdf-zone
+    trigger: true
+  - task: build
+    file: scdf-zone/ci/deploy.yml
+  - put: s3-repo
+    params:
+      file: "output/*.jar"
+      acl: public-read
+
+- name: register-processor
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: scdf-zone
+      passed:
+      - build-processor
+    - get: distribution-repository
+      resource: s3-repo
+      trigger: true
+      passed:
+      - build-processor
+      params:
+        generate_maven_metadata: true
+  - aggregate:
+    - task: register-maven
+      file: scdf-zone/ci/register-maven-app.yml
+
+- name: update-processor
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: scdf-zone
+      passed:
+      - register-processor
+    - get: distribution-repository
+      resource: s3-repo
+      trigger: true
+      passed:
+      - register-processor
+      params:
+        generate_maven_metadata: true
+  - aggregate:
+    - task: update-maven
+      file: scdf-zone/ci/update-maven-app.yml

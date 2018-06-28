@@ -1,0 +1,21 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: openjdk
+    tag: 8-jdk-alpine
+
+inputs:
+- name: scdf-zone
+
+outputs:
+- name: output
+
+caches:
+- path: maven
+- path: gradle
+
+run:
+  path: scdf-zone/ci/deploy.sh

@@ -17,10 +17,10 @@ public class ProcessorConfig {
         map.put("id", payload.getOrDefault("id", "-1"));
         map.put("county", payload.getOrDefault("county", "-1") + " (NY)");
         map.put("category", payload.getOrDefault("category", "-1"));
-        map.put("taxonomy_g", payload.getOrDefault("taxonomy_sg", "-1"));
-        map.put("taxonomy_sg", payload.getOrDefault("taxonomy_sg", "-1"));
-        map.put("sci_name", payload.getOrDefault("sci_name", "-1"));
-        map.put("common_name", payload.getOrDefault("common_name", "-1"));
+        map.put("taxonomyGroup", payload.getOrDefault("taxonomy_sg", "-1"));
+        map.put("taxonomySubgroup", payload.getOrDefault("taxonomy_sg", "-1"));
+        map.put("scientificName", payload.getOrDefault("sci_name", "-1"));
+        map.put("commonName", payload.getOrDefault("common_name", "-1"));
         return map;
     }
 }

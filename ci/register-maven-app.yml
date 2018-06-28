@@ -1,0 +1,14 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: sabby/xfmr-register
+
+inputs:
+- name: processor
+- name: distribution-repository
+
+run:
+  path: scdf-zone/ci/register-maven-app.sh
