@@ -18,6 +18,6 @@ token=$(jq -r '.access_token' response)
 curl \
 	-X \
 	POST "http://dataflow-9c27ceda-b077-427f-b5fa-c07f606dc5a8.apps.pcfgcp.jagapps.co/apps/processor/proc1?force=true" \
-		-d "uri=https://s3.amazonaws.com/jaguilar-releases/processor-sample-${THE_VERSION}.jar" \
+		-d "uri=https://s3.amazonaws.com/jaimegag-releases/processor-sample-${THE_VERSION}.jar" \
 		-H "Authorization: bearer "${token} \
 	  -v
