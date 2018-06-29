@@ -4,7 +4,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: sabby/xfmr-register
+    repository: jaimegag/alpine-jq
 
 inputs:
 - name: scdf-zone

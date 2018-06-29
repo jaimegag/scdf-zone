@@ -12,8 +12,7 @@ echo "Registering proc1 ${THE_VERSION}"
 # output=$(curl -X POST "https://login.sys.pcfgcp.jagapps.co/oauth/token" -d "grant_type=password&password=gonative&scope=&username=jaime&client_id=cf&client_secret=" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -k -v)
 curl -X POST "https://login.sys.pcfgcp.jagapps.co/oauth/token" -d "grant_type=password&password=gonative&scope=&username=jaime&client_id=cf&client_secret=" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -k -v > response
 # token=$(jq -r '.access_token' <<< "${output}")
-# token=($(jq -r '.access_token' response))
-echo '{"this":"that","then":"when"}' | jq
+token=($(jq -r '.access_token' response))
 
 # Replace `<ROUTE>` with the route of SCDF-server running in CF.
 curl \
