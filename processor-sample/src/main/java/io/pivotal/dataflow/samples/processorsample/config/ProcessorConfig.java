@@ -15,7 +15,7 @@ public class ProcessorConfig {
     public Map<String, Object> addState(@Payload Map<String, Object> payload) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", payload.getOrDefault("id", "-1"));
-        map.put("county", payload.getOrDefault("county", "-1") + " (NY)");
+        map.put("county", payload.getOrDefault("county", "-1") + " (NY state)");
         map.put("category", payload.getOrDefault("category", "-1"));
         map.put("taxonomyGroup", payload.getOrDefault("taxonomy_sg", "-1"));
         map.put("taxonomySubgroup", payload.getOrDefault("taxonomy_sg", "-1"));
