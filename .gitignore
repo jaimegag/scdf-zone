@@ -1,3 +1,6 @@
+# credentials
+ci/credentials.*
+
 # Compiled class file
 *.class
 
