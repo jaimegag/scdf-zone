@@ -18,7 +18,7 @@ token=$(jq -r '.access_token' response)
 curl \
 	-X \
 	POST "http://dataflow-9c27ceda-b077-427f-b5fa-c07f606dc5a8.apps.pcfgcp.jagapps.co/streams/deployments/update/demo" \
-    -d '{"updateProperties":{"version.proc1":"'"${THE_VERSION}"'"},"releaseName":"proc1","packageIdentifier":{"packageName":"proc1"}}' \
+    -d '{"updateProperties":{"version.proc1":"'"${THE_VERSION}"'"},"releaseName":"demo","packageIdentifier":{"packageName":"demo"}}' \
     -H "Content-Type: application/json" \
 		-H "Authorization: bearer "${token} \
     -v
