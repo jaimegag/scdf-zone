@@ -7,7 +7,7 @@ image_resource:
     repository: sabby/xfmr-register
 
 inputs:
-- name: processor
+- name: scdf-zone
 - name: distribution-repository
 
 run:
