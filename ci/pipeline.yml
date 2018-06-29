@@ -14,6 +14,7 @@ resources:
   type: s3
   source:
     bucket: jaimegag-releases
+    regexp: processor-sample-(.*).jar
     access_key_id: ((aws_access_key_id))
     secret_access_key: ((aws_secret_access_key))
 
