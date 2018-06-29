@@ -5,7 +5,7 @@ set -e -u
 cd scdf-zone/processor-sample
 
 # build the project
-./mvnw package
+./mvnw package -DskipTests
 
 # move the jar to a dedicated output directory
 cp target/processor-sample-*.jar ../../output/
