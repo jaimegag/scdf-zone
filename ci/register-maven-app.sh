@@ -9,8 +9,8 @@ THE_VERSION=$(grep -o '<version[^"]*' pom.xml | sed -e 's/<version>\(.*\)<\/vers
 echo "Registering proc1 ${THE_VERSION}"
 
 # Get token. client_id is cf to emulate cf CLI calls
-output=$(curl -X POST "https://login.sys.pcfgcp.jagapps.co/oauth/token" -d "grant_type=password&password=gonative&scope=&username=jaime&client_id=cf&client_secret=" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -k)
-token=$(jq -r '.access_token' <<< "$output")
+output=$(curl -X POST "https://login.sys.pcfgcp.jagapps.co/oauth/token" -d "grant_type=password&password=gonative&scope=&username=jaime&client_id=cf&client_secret=" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -k -v)
+token=$(jq -r '.access_token' <<< "${output}")
 
 # Replace `<ROUTE>` with the route of SCDF-server running in CF.
 curl \
