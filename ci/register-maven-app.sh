@@ -4,7 +4,7 @@ set -e -u
 
 cd scdf-zone/processor-sample
 
-THE_VERSION=$(grep -o '<version[^"]*' pom.xml | sed -e 's/<version>\(.*\)<\/version>/\1/')
+THE_VERSION=$(grep -o '<revision[^"]*' pom.xml | sed -e 's/<revision>\(.*\)<\/revision>/\1/')
 
 echo "Registering proc1 ${THE_VERSION}"
 

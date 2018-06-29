@@ -4,7 +4,7 @@ set -e -u
 
 cd scdf-zone/processor-sample
 
-THE_VERSION=$(grep -o '<version[^"]*' pom.xml | sed -e 's/<version>\(.*\)<\/version>/\1/')
+THE_VERSION=$(grep -o '<revision[^"]*' pom.xml | sed -e 's/<revision>\(.*\)<\/revision>/\1/')
 
 echo "Updating demo stream in SCDF for PCF with ${THE_VERSION} of Maven artifact"
 
