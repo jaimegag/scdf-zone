@@ -13,7 +13,7 @@ resources:
 - name: s3-repo
   type: s3
   source:
-    bucket: jaimegag-releases
+    bucket: jaguilar-releases
     regexp: processor-sample-(.*).jar
     access_key_id: ((aws_access_key_id))
     secret_access_key: ((aws_secret_access_key))
