@@ -1,0 +1,11 @@
+CREATE TABLE species (
+	id INT NOT NULL AUTO_INCREMENT,
+	county VARCHAR(100) NOT NULL,
+	category VARCHAR(100) NOT NULL,
+	taxonomy_g VARCHAR(100) NOT NULL,
+	taxonomy_sg VARCHAR(100) NOT NULL,
+	sci_name VARCHAR(100) NOT NULL,
+	common_name VARCHAR(100) NOT NULL,
+	tag INT,
+	PRIMARY KEY (id)
+	);
