@@ -106,10 +106,17 @@ You can use the Data Flow Server Dashboard or the Shell. In this guide we will u
     ```
 
 1. Wipe out data from `species-demo` app
-    - Restart the app for the in-memory DB to be wiped. 
+    - Restart the app for the in-memory DB to be wiped.
 
 
-1. Create Task
+1. Deploy Custom Task
+    - Create jar file. Got to the `/task-sample` folder in this repo and run :
+      ```
+      mvn clean package
+      ```
+      - You will need to put them in a public location to be accessed via http/https by the Data Flow Server.
+      - For convenience there is a version of this in a public S3 bucket:
+        - https://s3.amazonaws.com/jaguilar-releases/task-sample-0.0.5-SNAPSHOT.jar
     - Register task in the Data Flow server
       ```
       app register species-jdbc-2-api --type task --uri  https://s3.amazonaws.com/jaguilar-releases/task-sample-0.0.5-SNAPSHOT.jar
