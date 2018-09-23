@@ -2,11 +2,11 @@
 Collection of sample apps to demo SCDF Streams and Tasks on Spring Cloud Data Flow for PCF.
 Tested with SCDF for PCF Server 1.2.0 (SCDF Server v1.6.3)
 
-[Preparation](#Preparation)
+[Preparation](#preparation)
 
-[SCDF Stream demo](#SCDF Stream demo)
+[SCDF Stream demo](#scdf-stream-demo)
 
-[SCDF Task demo](#SCDF Task demo)
+[SCDF Task demo](#scdf-task-demo)
 
 ## Preparation
 These steps should be completed before delivering the demo
