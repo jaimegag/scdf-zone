@@ -2,9 +2,13 @@
 Collection of sample apps to demo SCDF Streams and Tasks on Spring Cloud Data Flow for PCF.
 Tested with SCDF for PCF Server 1.2.0 (SCDF Server v1.6.3)
 
-## SCDF Stream demo
+[Preparation](#Preparation)
 
-### Preparation
+[SCDF Stream demo](#SCDF Stream demo)
+
+[SCDF Task demo](#SCDF Task demo)
+
+## Preparation
 These steps should be completed before delivering the demo
 
 1. Install SCDF for PCF
@@ -31,9 +35,21 @@ These steps should be completed before delivering the demo
       - Import data using `/db/species_nyc_small.sql` or `/db/species_nyc.sql` in this repo, depending on how much data you want to load.
 
 1. Bulk import stream app starters
-  - Get URL from here: https://cloud.spring.io/spring-cloud-stream-app-starters/
-  - At the time of the creation of this repo this is the URL used: http://bit.ly/Celsius-SR3-stream-applications-rabbit-maven
-  - Go to the space where you created the SCDF server SI, select the Data Flow Server and click on Manage. In the SCDF Dashboard click on Add Applications -> Bulk Import Applications and use the app starters URL.
+    - Stream Apps
+      - Get URL from here: https://cloud.spring.io/spring-cloud-stream-app-starters/
+      - At the time of the creation of this repo this is the URL used: http://bit.ly/Celsius-SR3-stream-applications-rabbit-maven
+      - Go to the space where you created the SCDF server SI, select the Data Flow Server and click on Manage. In the SCDF Dashboard click on Add Applications -> Bulk Import Applications and use the app starters URL.
+    - Task Apps
+      - Get URL from here: https://cloud.spring.io/spring-cloud-task-app-starters/
+      - At the time of the creation of this repo this is the URL used: http://bit.ly/Dearborn-GA-task-applications-maven
+      - Bulk upload these apps as you did the Stream ones.
+
+1. Deploy `species-demo` API app
+    - We need an endpoint `https://species-app.apps.pcfgcp.jagapps.co/species` for the Stream sink to talk to.
+    - TODO: Add app to the repo
+
+
+## SCDF Stream demo
 
 ### Create and Deploy Stream
 You can use the Data Flow Server Dashboard or the Shell. In this guide we will use the Shell.
@@ -66,7 +82,7 @@ You can use the Data Flow Server Dashboard or the Shell. In this guide we will u
       ```
 
 1. Deploy Stream
-    - Create stream definition with options
+    - Create stream definition with options detailing the three apps we listed above
       ```
       stream create --name jdbc-to-api --definition "jdbc --query='select id,county,category,taxonomy_g,taxonomy_sg,sci_name,common_name from species where tag is NULL' --update='update species set tag=1 where id in (:id)' --outputType=application/json | species-add-state --outputType=application/json | species-api"
       ```
@@ -77,3 +93,36 @@ You can use the Data Flow Server Dashboard or the Shell. In this guide we will u
       stream deploy --name jdbc-to-api --properties "deployer.jdbc.cloudfoundry.services=mymysql"
       ```
       - In the deploy command we set a property indicating the Data Flow server to bind the `jdbc` source app to the `mymysql` Service Instance so that it can read the data with pre-loaded.
+      - Once the stream is deployed, SCDF will deploy the 3 apps in PCF and when the source comes up it will start reading all data and passing it on in the stream for processor and later sink to handle the payload.
+        - Thanks to the specific queries passed to the `jdbc` app, data will be read only once (After read, all rows are labeled with `tag=1`)
+        - Once that happens, which we can check by running `cf logs` for the sink app, we can access the `species-demo` endpoint (https://species-app.apps.pcfgcp.jagapps.co/species) and confirm that we see all the data that is in the Species DB.
+
+
+## SCDF Task demo
+
+1. Connect to the shell using CF CLI dataflow-shell plugin
+    ```
+    cf dataflow-shell dataflow
+    ```
+
+1. Wipe out data from `species-demo` app
+    - Restart the app for the in-memory DB to be wiped. 
+
+
+1. Create Task
+    - Register task in the Data Flow server
+      ```
+      app register species-jdbc-2-api --type task --uri  https://s3.amazonaws.com/jaguilar-releases/task-sample-0.0.5-SNAPSHOT.jar
+      ```
+
+1. Deploy Task
+    - Create task with a distinctive name and select the app name you registered as the definition
+      ```
+      task create --name species-task --definition species-jdbc-2-api
+      ```
+    - Deploy the task carefully selecting the 2 MySQL Service Instances you need the app to bind to: The SCDF Datastore for the task status and the one required by the business logic of the task with the NYC Species.
+      ```
+      task launch --name species-task --properties "deployer.species-jdbc-2-api.cloudfoundry.services=relational-cd75dcb0-9f85-4325-a103-1ddde18515b0,mymysql"
+      ```
+    - Once the task is deployed into PCF, it will read the data form the Species DB and will call the same `species-demo` API endpoint that was called by the Stream sink (https://species-app.apps.pcfgcp.jagapps.co/species)
+      - Check that endpoint to confirm that we see all the data that is in the Species DB.
