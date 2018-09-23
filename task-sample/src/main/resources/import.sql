@@ -1,0 +1,1 @@
+insert into species(id,county,category,taxonomy_g,taxonomy_sg,sci_name,common_name) values(1,'Albany','Animal','Amphibians','Frogs and Toads','Anaxyrus americanus','American Toad')

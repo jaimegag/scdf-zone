@@ -1,15 +1,13 @@
 package io.pivotal.datafow.samples.tasksample.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "species")
 public class Species implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(nullable = false)
@@ -31,6 +29,18 @@ public class Species implements Serializable {
     private String common_name;
 
     private Integer tag;
+
+    protected Species() {}
+
+    public Species(String county, String category, String taxonomy_g, String taxonomy_sg, String sci_name, String common_name, Integer tag) {
+        this.county = county;
+        this.category = category;
+        this.taxonomy_g = taxonomy_g;
+        this.taxonomy_sg = taxonomy_sg;
+        this.sci_name = sci_name;
+        this.common_name = common_name;
+        this.tag = tag;
+    }
 
     public Integer getId() {
         return id;
