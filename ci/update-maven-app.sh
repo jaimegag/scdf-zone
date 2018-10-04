@@ -18,7 +18,7 @@ token=$(jq -r '.access_token' response)
 curl \
 	-X \
 	POST "https://dataflow-cd75dcb0-9f85-4325-a103-1ddde18515b0.apps.pcfgcp.jagapps.co/streams/deployments/update/jdbc-to-api" \
-    -d '{"updateProperties":{"version.procs":"'"${THE_VERSION}"'"},"releaseName":"jdbc-to-api","packageIdentifier":{"packageName":"jdbc-to-api"}}' \
+    -d '{"updateProperties":{"version.species-add-state":"'"${THE_VERSION}"'"},"releaseName":"jdbc-to-api","packageIdentifier":{"packageName":"jdbc-to-api"}}' \
     -H "Content-Type: application/json" \
 		-H "Authorization: bearer "${token} \
 		-k -v
