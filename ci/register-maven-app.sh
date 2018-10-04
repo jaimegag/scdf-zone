@@ -20,4 +20,4 @@ curl \
 	POST "https://dataflow-cd75dcb0-9f85-4325-a103-1ddde18515b0.apps.pcfgcp.jagapps.co/apps/processor/procs?force=true" \
 		-d "uri=https://s3.amazonaws.com/jaguilar-releases/processor-sample-${THE_VERSION}.jar" \
 		-H "Authorization: bearer "${token} \
-	  -v
+	  -k -v

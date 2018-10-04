@@ -21,4 +21,4 @@ curl \
     -d '{"updateProperties":{"version.procs":"'"${THE_VERSION}"'"},"releaseName":"jdbc-to-api","packageIdentifier":{"packageName":"jdbc-to-api"}}' \
     -H "Content-Type: application/json" \
 		-H "Authorization: bearer "${token} \
-    -v
+		-k -v
