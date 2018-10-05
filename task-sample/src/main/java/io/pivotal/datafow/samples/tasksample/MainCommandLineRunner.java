@@ -47,10 +47,10 @@ public class MainCommandLineRunner implements CommandLineRunner {
             speciesMap.put("id", species.getId().toString());
             speciesMap.put("county", species.getCounty());
             speciesMap.put("category", species.getCategory());
-            speciesMap.put("taxonomy_g", species.getTaxonomy_g());
-            speciesMap.put("taxonomy_sg", species.getTaxonomy_sg());
-            speciesMap.put("sci_name", species.getSci_name());
-            speciesMap.put("common_name", species.getCommon_name());
+            speciesMap.put("taxonomyGroup", species.getTaxonomy_g());
+            speciesMap.put("taxonomySubgroup", species.getTaxonomy_sg());
+            speciesMap.put("scientificName", species.getSci_name());
+            speciesMap.put("commonName", species.getCommon_name());
             HttpEntity<Map<String, String>> httpEntity = new HttpEntity<Map<String, String>>(speciesMap);
             String response = restTemplate.postForObject("https://species-app.apps.pcfgcp.jagapps.co/species", httpEntity, String.class);
             //String response = restTemplate.postForObject("http://localhost:8888/species", httpEntity, String.class);
