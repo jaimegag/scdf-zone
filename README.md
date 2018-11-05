@@ -144,7 +144,7 @@ This repo contains a sample pipeline that will update the `species-add-state` Pr
 
 ### Prepare credentials for the pipeline
 
-The pipeline uses an S3 bucket to store the build artifacts. An AWS key/secret pair with access to read/write
+The pipeline uses an S3 bucket to store the build artifacts. An AWS key/secret pair with access to read/write is required. A sample `ci/sample-credentials.yml` can be found in this repo as reference. Create your own `ci/credentials.yml` file.
 
 ### Pipelines steps
 
@@ -181,7 +181,7 @@ This pipeline consist on 3 steps:
 
 To deploy the pipeline first make sure you have access to a Concourse server and you are targeting it with the `fly` CLI. Then run:
 ```
-fly -t k8s sp -p processor -c pipeline.yml -l credentials.yml
+fly -t k8s sp -p processor -c ci/pipeline.yml -l ci/credentials.yml
 fly -t k8s up -p processor
 ```
 
@@ -195,12 +195,12 @@ These changes are needed before using this pipeline. Pending extracting this con
 
 1. S3 resource Bucket name:
 
-  This resource points to `jaguilar-releases` bucket. Make sure to change the `pipeline.yml`, `register-maven-app.sh` and `update-maven-app.sh` files to point to another bucket you have r/w access to.
+  This resource points to `jaguilar-releases` bucket. Make sure to change the `ci/pipeline.yml`, `ci/register-maven-app.sh` and `ci/update-maven-app.sh` files to point to another bucket you have r/w access to.
 
 1. SCDF Server base URL:
 
-  The scripts target a specific PCF (PAS) System URL where the SCDF has been deployed. Make sure to change the `register-maven-app.sh` and `update-maven-app.sh` files to use a different base URL for a SCDF server you have access to.
+  The scripts target a specific PCF (PAS) System URL where the SCDF has been deployed. Make sure to change the `ci/register-maven-app.sh` and `ci/update-maven-app.sh` files to use a different base URL for a SCDF server you have access to.
 
 1. PCF credentials:
 
-  The scripts use specific PCF (PAS) credentials to get an Oauth token with which we can access the SCDF Server APIs. Make sure to change the `register-maven-app.sh` and `update-maven-app.sh` files to use a different credentials to be able to get a token from the PCF install you are using.
+  The scripts use specific PCF (PAS) credentials to get an Oauth token with which we can access the SCDF Server APIs. Make sure to change the `ci/register-maven-app.sh` and `ci/update-maven-app.sh` files to use a different credentials to be able to get a token from the PCF install you are using.
