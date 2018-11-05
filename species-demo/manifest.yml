@@ -1,0 +1,6 @@
+applications:
+- name: species-demo
+  memory: 1G
+  instances: 1
+  host: species-demo
+  path: ./target/species-demo-0.0.1-SNAPSHOT.jar
