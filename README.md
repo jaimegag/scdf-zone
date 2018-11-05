@@ -8,6 +8,8 @@ Tested with SCDF for PCF Server 1.2.0 (SCDF Server v1.6.3)
 
 [SCDF Task demo](#scdf-task-demo)
 
+[SCDF Concourse demo](#scdf-concourse-demo)
+
 ## Preparation
 These steps should be completed before delivering the demo
 
@@ -46,7 +48,7 @@ These steps should be completed before delivering the demo
 
 1. Deploy `species-demo` API app
     - We need an endpoint `https://species-app.apps.pcfgcp.jagapps.co/species` for the Stream sink to talk to.
-    - TODO: Add app to the repo
+    - TODO: Add app to this repo. App just needs to accept a POST call to write a species object and keep it in an in-memory DB.
 
 
 ## SCDF Stream demo
@@ -133,3 +135,72 @@ You can use the Data Flow Server Dashboard or the Shell. In this guide we will u
       ```
     - Once the task is deployed into PCF, it will read the data form the Species DB and will call the same `species-demo` API endpoint that was called by the Stream sink (https://species-app.apps.pcfgcp.jagapps.co/species)
       - Check that endpoint to confirm that we see all the data that is in the Species DB.
+
+## SCDF Concourse demo
+
+You can take advantage of SCDF and [Skipper](https://docs.spring.io/spring-cloud-skipper/docs/current/reference/htmlsingle/) APIs to build a CICD pipeline that allows you to build and register new versions of existing SCDF applications and to update an existing SCDF Stream with the new application version.
+
+This repo contains a sample pipeline that will update the `species-add-state` Processor application used in the [SCDF Stream demo](#scdf-stream-demo) above.
+
+### Prepare credentials for the pipeline
+
+The pipeline uses an S3 bucket to store the build artifacts. An AWS key/secret pair with access to read/write
+
+### Pipelines steps
+
+This pipeline consist on 3 steps:
+![pipeline_image](./images/pipeline.png)
+
+1. build-processor
+
+  This step will build a new version of the Processor application if there were changes in the git resource. If changes are made, it is recommended to bump the version in the `pom.xml` file to allow the pipeline and the SCDF server to identify it is a new release for that application.
+
+1. register-processor
+
+  This step will authenticate against PCF's UAA to obtain a token that later can be used to call SCDF Server API URL in order to request the app registration. This likely register a new version of an existing app.
+
+  You can check all versions available of your processor app vis SCDF Shell like this, where `species-add-state` is the name given to the processor application:
+  ```
+  dataflow:>app list --id processor:species-add-state
+  ╔══════╤════════════════════════════════════╤════╤════╗
+  ║source│             processor              │sink│task║
+  ╠══════╪════════════════════════════════════╪════╪════╣
+  ║      │> species-add-state-0.0.1-SNAPSHOT <│    │    ║
+  ║      │species-add-state-0.0.2-SNAPSHOT    │    │    ║
+  ║      │species-add-state-0.0.3-SNAPSHOT    │    │    ║
+  ╚══════╧════════════════════════════════════╧════╧════╝
+  ```
+
+1. update-processor
+
+  This step will also do the same authentication to later call SCDF Server API URL in order to update the existing (running) SCDF Stream, indicating the new version of the processor to be used.
+
+  When this API call is made, SCDF will deploy a new version of the processor app (in PCF)
+
+### Deploy pipeline
+
+To deploy the pipeline first make sure you have access to a Concourse server and you are targeting it with the `fly` CLI. Then run:
+```
+fly -t k8s sp -p processor -c pipeline.yml -l credentials.yml
+fly -t k8s up -p processor
+```
+
+### Necessary changes in the pipeline files for customization
+
+These changes are needed before using this pipeline. Pending extracting this configuration to variables to allow better customization.
+
+1. Git Repository resource:
+
+  The git resource in the pipeline will detect changes in this repo. Make sure to change the `pipeline.yml` file to point to another repository you need.
+
+1. S3 resource Bucket name:
+
+  This resource points to `jaguilar-releases` bucket. Make sure to change the `pipeline.yml`, `register-maven-app.sh` and `update-maven-app.sh` files to point to another bucket you have r/w access to.
+
+1. SCDF Server base URL:
+
+  The scripts target a specific PCF (PAS) System URL where the SCDF has been deployed. Make sure to change the `register-maven-app.sh` and `update-maven-app.sh` files to use a different base URL for a SCDF server you have access to.
+
+1. PCF credentials:
+
+  The scripts use specific PCF (PAS) credentials to get an Oauth token with which we can access the SCDF Server APIs. Make sure to change the `register-maven-app.sh` and `update-maven-app.sh` files to use a different credentials to be able to get a token from the PCF install you are using.
