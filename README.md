@@ -23,7 +23,6 @@ These steps should be completed before delivering the demo
     cf cs p-dataflow standard dataflow
     ```
 
-
 1. Create MySQL Service Instance for Species Database
     ```
     cf cs p.mysql db-small mymysql
@@ -47,9 +46,13 @@ These steps should be completed before delivering the demo
       - Bulk upload these apps as you did the Stream ones.
 
 1. Deploy `species-demo` API app
-    - We need an endpoint `https://species-app.apps.pcfgcp.jagapps.co/species` for the Stream sink to talk to.
-    - TODO: Add app to this repo. App just needs to accept a POST call to write a species object and keep it in an in-memory DB.
-
+    - We need an endpoint (e.g: `https://species-app.apps.pcfgcp.jagapps.co/species`) for the Stream sink to talk to.
+    - This repo has a `species-demo` application that can be used for this purpose. To deploy it run the following commands:
+      ```
+      cd species-demo
+      mvn clean package
+      cf push
+      ```
 
 ## SCDF Stream demo
 
